@@ -1,21 +1,44 @@
-import { StatusBar } from 'expo-status-bar';
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import ArticlesIndex from './src/components/ArticlesIndex'
+import AboutUs from './src/components/AboutUs'
+import ArticleDetails from './src/components/ArticleDetails'
+import HeaderButtons from './src/components/HeaderButtons'
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
-export default function App() {
+
+const Stack = createStackNavigator()
+const App = () => {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name='ArticlesIndex'
+          component={ArticlesIndex}
+          options={(props) => ({
+            headerStyle: {
+              backgroundColor: "rgba(0,0,0,0.3)"
+            },
+            title: "Current news",
+            headerRight: () => <HeaderButtons {...props} />
+          })
+          }
+        />
+        <Stack.Screen
+          name='AboutUs'
+          component={AboutUs}
+        />
+        <Stack.Screen
+          name='ArticleDetails'
+          component={ArticleDetails}
+          options={
+            { headerBackTitle: 'Back' }
+          }
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
+
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default App
