@@ -11,24 +11,31 @@ import {
 
 const ListItem = (props) => {
   const viewArticle = (
-    <TouchableOpacity
-      testID={`article-${props.article.id}`}
-      key={props.article.id}
-      onPress={() => {
-        props.navigation.navigate("ArticleDetails", { articleId: props.article.id });
-      }}
-    >
-      <View>
+    <View style={styles.container}>
+      <TouchableOpacity
+        testID={`article-${props.article.id}`}
+        key={props.article.id}
+        onPress={() => {
+          props.navigation.navigate("ArticleDetails", {
+            articleId: props.article.id,
+          });
+        }}
+      >
         <Image
           source={{ uri: props.article.image }}
           style={styles.image}
           testID={`article-image-${props.article.id}`}
         />
-        <Text id={`article-title-${props.article.id}`} style={styles.title}>
-          {props.article.title}
-        </Text>
-      </View>
-    </TouchableOpacity>
+        <View style={styles.card}>
+          <Text id={`article-title-${props.article.id}`} style={styles.title}>
+            {props.article.title}
+          </Text>
+          <Text id={`article-lead-${props.article.id}`} style={styles.subtitle}>
+            {props.article.lead}
+          </Text>
+        </View>
+      </TouchableOpacity>
+    </View>
   );
 
   return <>{viewArticle}</>;
