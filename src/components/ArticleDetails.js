@@ -1,20 +1,35 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { View, StyleSheet, Dimensions, Image } from 'react-native'
 import { Paragraph, Title } from 'react-native-paper';
-const ArticleDetails = props => {
-  const item = props.route.params.item
-  const { image, title, lead, content} = item
+import axios from "axios";
 
-  return (
-    <View  style={styles.container}>
-      <Image style={styles.image} source={{ uri: image }} />
+const ArticleDetails = ({ route }) => {
+  const { articleId } = route.params
+  const [article, setSingleArticle] = useState({})
+ 
+  const getSingleArticle = async () => {
+    let response = await axios.get(`/articles/${articleId}`);
+    setSingleArticle(response.data.article);
+  };
+
+  useEffect(() => {
+    getSingleArticle();
+  }, [])
+
+  const singleArticle = article && (
+    <View>
+      <View key={article.id}>
+      <Image style={styles.image} source={{ uri: article.image }} />
       <View style={styles.contentContainer}>
-        <Title style={styles.title}>{title}</Title>
-        <Paragraph style={styles.subtitle}>{lead}</Paragraph>
-        <Paragraph style={styles.subtitle}>{content}</Paragraph>
+        <Title style={styles.title}>{article.title}</Title>
+        <Paragraph style={styles.subtitle}>{article.lead}</Paragraph>
+        <Paragraph style={styles.subtitle}>{article.content}</Paragraph>
+      </View>
       </View>
     </View>
   )
+
+  return <View>{singleArticle}</View>
 }
 
 export default ArticleDetails

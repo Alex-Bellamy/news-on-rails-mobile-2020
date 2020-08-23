@@ -1,51 +1,54 @@
 import React from "react";
 
-
 import {
   View,
   StyleSheet,
   Text,
   Image,
   TouchableOpacity,
-  Dimensions
+  Dimensions,
 } from "react-native";
 
-const ListItem = ({ item, navigation }) => {
-  const { image, title, lead } = item;
-
-  
-
-  return (
-    <View style={styles.container}>
-      <TouchableOpacity
-        onPress={() => navigation.navigate('ArticleDetails', { item: item })}
-      >
-        <Image style={styles.image} source={{ uri: image }} />
-        <View style={styles.card}>
-          <Text style={styles.title}>{title}</Text>
-          <Text style={styles.subtitle}>{lead}</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
+const ListItem = (props) => {
+  const viewArticle = (
+    <TouchableOpacity
+      testID={`article-${props.article.id}`}
+      key={props.article.id}
+      onPress={() => {
+        props.navigation.navigate("ArticleDetails", { articleId: props.article.id });
+      }}
+    >
+      <View>
+        <Image
+          source={{ uri: props.article.image }}
+          style={styles.image}
+          testID={`article-image-${props.article.id}`}
+        />
+        <Text id={`article-title-${props.article.id}`} style={styles.title}>
+          {props.article.title}
+        </Text>
+      </View>
+    </TouchableOpacity>
   );
 
-}
+  return <>{viewArticle}</>;
+};
 
-export default ListItem
+export default ListItem;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1
+    flex: 1,
   },
   card: {
     position: "absolute",
-    width: Dimensions.get('window').width,
+    width: Dimensions.get("window").width,
     paddingTop: 8,
     paddingLeft: 10,
     paddingRight: 8,
     paddingBottom: 16,
     top: 8,
-    backgroundColor: "rgba(0,0,0,0.3)"
+    backgroundColor: "rgba(0,0,0,0.3)",
   },
   title: {
     color: "white",
@@ -57,7 +60,7 @@ const styles = StyleSheet.create({
   },
   image: {
     height: 250,
-    width: Dimensions.get('window').width,
-    marginBottom: 5
+    width: Dimensions.get("window").width,
+    marginBottom: 5,
   },
 });

@@ -1,43 +1,49 @@
-import React, {useState, useEffect} from 'react'
-import { StyleSheet, View, FlatList } from 'react-native'
-import ListItem from './ListItem'
-import axios from 'axios'
+import React, { useState, useEffect } from "react";
+import { StyleSheet, View, FlatList } from "react-native";
+import ListItem from "./ListItem";
+import axios from "axios";
 
-
-const ArticlesIndex = ({navigation}) => {
- useEffect(() => {
-   getArticles()
- }, [])
-
-  const [articlesList, setArticlesList] = useState([])
+const ArticlesIndex = ({ navigation }) => {
+  const [articlesList, setArticlesList] = useState([]);
 
   const getArticles = async () => {
-    let response = await axios.get(`http://localhost:3000/api/v1/articles`)
-    setArticlesList(response.data.articles)
-  }
+    try {
+      let response = await axios.get(`/articles`);
+      setArticlesList(response.data.articles);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
+  useEffect(() => {
+    getArticles();
+  }, []);
   return (
-    <View style={styles.container}>
-      <FlatList
-        data={articlesList}
-        keyExtractor={article => article.id.toString()}
-        renderItem={({ item }) => {
-          return (
-            <ListItem item={item} navigation= {navigation}/>
-          )
-        }}
-      />
-    </View>
-  )
-}
+    <>
+      {articlesList && (
+        <>
+          <View style={styles.container}>
+            <FlatList
+              data={articlesList}
+              keyExtractor={(article) => article.id.toString()}
+              renderItem={({ item }) => {
+                return <ListItem article={item} navigation={navigation} />;
+              }}
+            />
+          </View>
+        </>
+      )}
+    </>
+  );
+};
 
-export default ArticlesIndex
+export default ArticlesIndex;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
